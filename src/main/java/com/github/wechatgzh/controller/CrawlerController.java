@@ -27,11 +27,9 @@ public class CrawlerController {
     public String search(String keyword) throws IOException {
         URL url = new URL("https://lajifenleiapp.com/sk/" + keyword);
         Document document = Jsoup.parse(url, 30000);
-        String className="[class=col-md-offset-1 col-md-10 col-xs-12]";
+        String className="[class=row]";
         Elements div = document.getElementsByTag("div").select(className);
-        Element element = div.get(1).getElementsByTag("div").get(0);
-        Element child = element.getElementsByTag("div").get(0);
-        String result = child.getElementsByTag("h1").text();
+        String result = div.get(5).text();
         System.out.println(result);
         return result;
     }
