@@ -10,5 +10,5 @@ public class Constant {
 
     public static final String APP_SECRET = "775bbbb3500dd381737183b3f0ebdc63";
 
-    public static final String TOKEN = "wxgzh0306";
+    public static final String TOKEN = "fatigueHTML05240";
 }
