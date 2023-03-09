@@ -46,6 +46,8 @@ public class SignatureBiz {
                 return result("大吉大利，今晚吃鸡", document);
             } else if ("2".equals(content)) {
                 return result("落地成盒，明天吃鸡", document);
+            } else {
+                return result("你说啥呢，我咋听不懂",document);
             }
         }
         return null;
