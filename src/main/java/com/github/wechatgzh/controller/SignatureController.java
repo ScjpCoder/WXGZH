@@ -69,26 +69,4 @@ public class SignatureController {
     }
 
 
-    public static AccessToken getAccessToken() {
-        final RestTemplate restTemplate = new RestTemplate();
-        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + Constant.APPID + "&secret=" + Constant.APP_SECRET;
-        System.out.println(url);
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
-        String body = forEntity.getBody();
-        AccessToken accessToken = JSONObject.parseObject(body, AccessToken.class);
-        String expiresIn = accessToken.getExpiresIn();
-        long now = System.currentTimeMillis();
-        accessToken.setExpiresIn(String.valueOf(now + Long.parseLong(expiresIn) * 1000));
-        return accessToken;
-    }
-
-    public static void saveAccessToken(AccessToken accessToken) throws IOException {
-        String token = JSONObject.toJSONString(accessToken);
-        File file = new File("accessToken.txt");
-        FileWriter fileWriter = new FileWriter(file);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        bufferedWriter.write(token);
-        bufferedWriter.flush();
-        bufferedWriter.close();
-    }
 }
