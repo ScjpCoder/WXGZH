@@ -2,7 +2,6 @@ package com.github.wechatgzh.biz;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.github.wechatgzh.config.Constant;
-import com.github.wechatgzh.controller.SignatureController;
 import com.github.wechatgzh.entity.AccessToken;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -38,7 +37,7 @@ public class TokenBiz {
      *
      * @return accessToken
      */
-    public static AccessToken getAccessToken() {
+    public static AccessToken getAccessToken() throws IOException {
         final RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + Constant.APPID + "&secret=" + Constant.APP_SECRET;
         System.out.println(url);
@@ -48,6 +47,7 @@ public class TokenBiz {
         String expiresIn = accessToken.getExpiresIn();
         long now = System.currentTimeMillis();
         accessToken.setExpiresIn(String.valueOf(now + Long.parseLong(expiresIn) * 1000));
+        saveAccessToken(accessToken);
         return accessToken;
     }
 
@@ -70,25 +70,29 @@ public class TokenBiz {
             AccessToken accessToken = getAccessToken();
             // 保存accessToken
             log.info("保存accessToken");
-            saveAccessToken(accessToken);
+
             return accessToken;
         }
     }
 
-    public static boolean isValidAccessToken() throws IOException {
+    public static AccessToken isValidAccessToken() throws IOException {
         AccessToken accessToken = readAccessToken();
         long now = System.currentTimeMillis();
-        System.out.println("now: " + now);
+        log.info("now: " + now);
         long expires = Long.parseLong(accessToken.getExpiresIn());
-        System.out.println("expires: " + expires);
+        log.info("expires: " + expires);
         long last = now + 7200 * 1000;
-        System.out.println("last: " + last);
-        return now - last < expires;
+        log.info("last: " + last);
+        if (now - last < expires) {
+            return accessToken;
+        } else {
+            return getAccessToken();
+        }
     }
 
     @Test
     public static void main(String[] args) throws IOException {
-        boolean validAccessToken = isValidAccessToken();
+        AccessToken validAccessToken = isValidAccessToken();
         System.out.println(validAccessToken);
     }
 }
