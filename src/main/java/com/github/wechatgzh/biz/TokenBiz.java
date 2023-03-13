@@ -81,9 +81,8 @@ public class TokenBiz {
         log.info("now: " + now);
         long expires = Long.parseLong(accessToken.getExpiresIn());
         log.info("expires: " + expires);
-        long last = now + 7200 * 1000;
-        log.info("last: " + last);
-        if (now - last < expires) {
+
+        if (now < expires) {
             return accessToken;
         } else {
             return getAccessToken();
