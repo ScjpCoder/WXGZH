@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.github.wechatgzh.config.Constant;
 import com.github.wechatgzh.controller.SignatureController;
 import com.github.wechatgzh.entity.AccessToken;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -14,8 +15,14 @@ import java.io.*;
  * @author 13439
  */
 //@Service
+@Slf4j
 public class TokenBiz {
-
+    /**
+     * 保存accessToken
+     *
+     * @param accessToken accessToken
+     * @throws IOException 保存文件异常
+     */
     public static void saveAccessToken(AccessToken accessToken) throws IOException {
         String token = JSONObject.toJSONString(accessToken);
         File file = new File("accessToken.txt");
@@ -26,6 +33,11 @@ public class TokenBiz {
         bufferedWriter.close();
     }
 
+    /**
+     * 获取accessToken
+     *
+     * @return accessToken
+     */
     public static AccessToken getAccessToken() {
         final RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + Constant.APPID + "&secret=" + Constant.APP_SECRET;
@@ -39,6 +51,12 @@ public class TokenBiz {
         return accessToken;
     }
 
+    /**
+     * 读取accessToken
+     *
+     * @return accessToken
+     * @throws IOException 读取文件异常
+     */
     public static AccessToken readAccessToken() throws IOException {
         try {
             FileReader fileReader = new FileReader("accessToken.txt");
@@ -47,28 +65,29 @@ public class TokenBiz {
             bufferedReader.close();
             return JSONObject.parseObject(s, AccessToken.class);
         } catch (Exception e) {
+            // 如果读取文件失败，重新获取accessToken
+            log.warn("读取文件失败，重新获取accessToken");
             AccessToken accessToken = getAccessToken();
+            // 保存accessToken
+            log.info("保存accessToken");
             saveAccessToken(accessToken);
             return accessToken;
         }
     }
 
-    public static boolean isValidAccessToken() {
-        AccessToken accessToken = getAccessToken();
+    public static boolean isValidAccessToken() throws IOException {
+        AccessToken accessToken = readAccessToken();
         long now = System.currentTimeMillis();
         System.out.println("now: " + now);
         long expires = Long.parseLong(accessToken.getExpiresIn());
         System.out.println("expires: " + expires);
         long last = now + 7200 * 1000;
         System.out.println("last: " + last);
-        if (now - last < expires) {
-            return true;
-        }
-        return false;
+        return now - last < expires;
     }
 
     @Test
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         boolean validAccessToken = isValidAccessToken();
         System.out.println(validAccessToken);
     }
