@@ -12,6 +12,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static com.github.wechatgzh.config.StaticUrl.CREATE_MENU;
+import static com.github.wechatgzh.config.StaticUrl.DELETE_MENU;
+
 /**
  * @author 13439
  */
@@ -21,12 +24,12 @@ public class MenuBiz {
 
     public String createMenu(AccessToken accessToken) throws IOException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + accessToken.getAccessToken();
+        String url = String.format(CREATE_MENU, accessToken.getAccessToken());
         FileReader fileReader = new FileReader("menu.json");
         BufferedReader bufferedReader = new BufferedReader(fileReader);
-        String s = bufferedReader.readLine();
+        String jsonString = bufferedReader.readLine();
         bufferedReader.close();
-        JSONObject jsonObject = JSONObject.parseObject(s);
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
         String result = restTemplate.postForObject(url, jsonObject.toJSONString(), String.class);
         log.info("创建菜单结果:{}", result);
         return result;
@@ -34,7 +37,7 @@ public class MenuBiz {
 
     public String deleteMenu(AccessToken accessToken) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=" + accessToken.getAccessToken();
+        String url = String.format(DELETE_MENU, accessToken.getAccessToken());
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
         String body = forEntity.getBody();
         log.info(body);

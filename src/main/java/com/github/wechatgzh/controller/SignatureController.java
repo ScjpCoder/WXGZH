@@ -1,23 +1,16 @@
 package com.github.wechatgzh.controller;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.github.wechatgzh.biz.SignatureBiz;
 import com.github.wechatgzh.config.Constant;
-import com.github.wechatgzh.entity.AccessToken;
 import com.github.wechatgzh.utils.Sha1Util;
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
 

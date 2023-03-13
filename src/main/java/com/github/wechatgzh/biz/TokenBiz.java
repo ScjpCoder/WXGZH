@@ -10,6 +10,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 
+import static com.github.wechatgzh.config.StaticUrl.GET_ACCESS_TOKEN;
+
 /**
  * @author 13439
  */
@@ -39,8 +41,8 @@ public class TokenBiz {
      */
     public static AccessToken getAccessToken() throws IOException {
         final RestTemplate restTemplate = new RestTemplate();
-        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + Constant.APPID + "&secret=" + Constant.APP_SECRET;
-        System.out.println(url);
+        String url = String.format(GET_ACCESS_TOKEN, Constant.APPID, Constant.APP_SECRET);
+        log.info("url: " + url);
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url, String.class);
         String body = forEntity.getBody();
         AccessToken accessToken = JSONObject.parseObject(body, AccessToken.class);
