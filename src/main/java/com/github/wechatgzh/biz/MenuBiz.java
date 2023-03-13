@@ -30,7 +30,7 @@ public class MenuBiz {
         String jsonString = bufferedReader.readLine();
         bufferedReader.close();
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
-        String result = restTemplate.postForObject(url, jsonObject.toJSONString(), String.class);
+        String result = restTemplate.postForObject(url, jsonObject, String.class);
         log.info("创建菜单结果:{}", result);
         return result;
     }
