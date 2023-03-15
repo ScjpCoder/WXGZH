@@ -3,6 +3,7 @@ package com.github.wechatgzh.config;
 /**
  * @author 13439
  */
+@SuppressWarnings("all")
 public class StaticUrl {
 
 
@@ -16,4 +17,7 @@ public class StaticUrl {
 
 
     public static final String DELETE_MENU = BASE_URL + "menu/delete?access_token=%s";
+
+
+    public static final String GET_TICKET = BASE_URL + "ticket/getticket?access_token=%s&type=jsapi";
 }
