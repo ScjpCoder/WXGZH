@@ -20,4 +20,7 @@ public class StaticUrl {
 
 
     public static final String GET_TICKET = BASE_URL + "ticket/getticket?access_token=%s&type=jsapi";
+
+
+    public static final String UPLOAD_TEMPORARY_MATERIAL = BASE_URL + "media/upload?access_token=%s&type=%s";
 }
