@@ -1,4 +1,4 @@
-package com.github.wechatgzh.biz;
+package com.github.wechatgzh.utils;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
