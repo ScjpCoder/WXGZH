@@ -10,7 +10,7 @@ import java.nio.file.Files;
 @Service
 public class MaterialUtil {
 
-    static String getResponse(HttpURLConnection con, String result) {
+    public static String getResponse(HttpURLConnection con, String result) {
         StringBuilder buffer = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
             // 定义BufferedReader输入流来读取URL的响应
@@ -26,7 +26,7 @@ public class MaterialUtil {
         return result;
     }
 
-    static void outputTable(File file, HttpURLConnection con, String boundary, byte[] head) throws IOException {
+    public static void outputTable(File file, HttpURLConnection con, String boundary, byte[] head) throws IOException {
         OutputStream out = new DataOutputStream(con.getOutputStream());
         // 输出表头
         out.write(head);
@@ -45,7 +45,7 @@ public class MaterialUtil {
     }
 
     @SuppressWarnings("all")
-    static byte[] getHeader(File file, String boundary) {
+    public static byte[] getHeader(File file, String boundary) {
         StringBuilder sb = new StringBuilder();
         sb.append("--")
                 .append(boundary)
