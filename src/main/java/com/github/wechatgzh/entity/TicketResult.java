@@ -7,7 +7,7 @@ import lombok.Data;
  * @author 13439
  */
 @Data
-public class Ticket {
+public class TicketResult {
 
     @JSONField(name = "ticket")
     private String ticket;
