@@ -95,7 +95,6 @@ public class TicketBiz {
         }
     }
 
-    @Test
     public static void main(String[] args) throws IOException {
         Ticket ticket = isValidTicket();
         System.out.println(ticket);
